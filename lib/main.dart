@@ -12,12 +12,7 @@ void main(){
       duration: 2500,
       type: AnimatedSplashType.StaticDuration,
     )
-
-
-
-
   ));
-
 }
 
 
