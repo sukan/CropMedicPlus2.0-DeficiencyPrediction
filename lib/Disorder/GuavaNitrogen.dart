@@ -26,9 +26,6 @@ class _GuavaNitrogenState extends State<GuavaNitrogen> {
                             // Photo from https://unsplash.com/photos/2d4lAQAlbDA
                             AssetImage('assets/7.JPG'),
                             // Photo from https://unsplash.com/photos/FqqiAvJejto
-//                            AssetImage('assets/12.jpg'),
-                            // Photo from https://unsplash.com/photos/_-JR5TxKNSo
-
                           ],
                           dotSize: 4.0,
                           dotSpacing: 15.0,
@@ -92,18 +89,15 @@ class _GuavaNitrogenState extends State<GuavaNitrogen> {
             ),
             Padding(
               padding: EdgeInsets.only(top: 20, bottom: 20, left: 14, right: 14),
-              child: Text('Stunted growth. Pale green to light yellow colour (chlorosis) appearing first on older leaves, usually starting at the tips. Depending on the severity of deficiency, the choruses could result in the death and / or dropping of the older leaves.', style: TextStyle(
+              child: Text('Stunted growth. Pale green to light yellow colour (chlorosis) appearing '
+                  'first on older leaves, usually starting at the tips. Depending on the severity of deficiency,'
+                  ' the choruses could result in the death and / or dropping of the older leaves.',
+                style: TextStyle(
                   fontSize: 17,
                   fontFamily: 'Raleway'),textAlign: TextAlign.justify,),
             ),
             Padding(
               padding: EdgeInsets.only(top: 40, bottom: 20, left: 14, right: 14),
-//              child: Text(
-//                'Deficiency Stage',
-//                style: TextStyle(
-//                    fontSize: 20,
-//                    fontFamily: 'ConcertOne-Regular'),
-//              ),
             ),
 
             Padding(
@@ -131,7 +125,7 @@ class _GuavaNitrogenState extends State<GuavaNitrogen> {
         ));
   }
 
-  Widget amenities(
+  Widget disorders(
       String url1,
       String url2,
       String url3,
@@ -224,7 +218,7 @@ class _GuavaNitrogenState extends State<GuavaNitrogen> {
     );
   }
 
-  Widget about_hotel(
+  Widget disorder(
       String description,
       ) {
     return Padding(

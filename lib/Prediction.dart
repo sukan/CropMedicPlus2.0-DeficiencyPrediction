@@ -22,21 +22,7 @@ class _DetectMainState extends State<DetectMain> {
   var _recognitions;
   bool dialVisible = true;
 
-  final FirebaseStorage _storage =
-      FirebaseStorage(storageBucket: 'gs://cropmedicplus2.appspot.com');
-
-  StorageUploadTask _uploadTask;
-
-  _startUpload() {
-    String filePath = 'images/${DateTime.now()}.png';
-
-    setState(() {
-      _uploadTask = _storage.ref().child(filePath).putFile(_image);
-    });
-    print("upload");
-    return printValue(filePath);
-  }
-
+  // Load the tflite model for the prediction
   loadModel() async {
     Tflite.close();
     try {
@@ -51,7 +37,7 @@ class _DetectMainState extends State<DetectMain> {
     }
   }
 
-  // run prediction using TFLite on given image
+  // Run prediction using TFLite on given image
   Future predict(File image) async {
     var recognitions = await Tflite.runModelOnImage(
         path: image.path,
@@ -69,19 +55,29 @@ class _DetectMainState extends State<DetectMain> {
 
     print(recognitions);
 
-    await _startUpload();
     setState(() {
       _recognitions = recognitions;
     });
-    // _startUpload();
+  }
+
+  // Upload the image to the firebase storage
+  uploadFile(File _image) {
+    StorageReference storageReference =
+        FirebaseStorage.instance.ref().child('images/${DateTime.now()}');
+    StorageUploadTask uploadTask = storageReference.putFile(_image);
+    uploadTask.onComplete;
+    print('File Uploaded');
+    String returnURL;
+    storageReference.getDownloadURL().then((fileURL) {
+      returnURL = fileURL;
+    });
+    return returnURL;
   }
 
   // Send image to predict method selected from gallery or camera
   sendImage(File image) async {
     if (image == null) return;
     await predict(image);
-
-
 
     // Get the width and height of selected image
     FileImage(image)
@@ -93,7 +89,6 @@ class _DetectMainState extends State<DetectMain> {
             _image = image;
           });
         })));
-
   }
 
   // Select image from gallery
@@ -102,6 +97,7 @@ class _DetectMainState extends State<DetectMain> {
     if (image == null) return;
     setState(() {});
     sendImage(image);
+    uploadFile(image);
   }
 
   // Select image from camera
@@ -110,6 +106,7 @@ class _DetectMainState extends State<DetectMain> {
     if (image == null) return;
     setState(() {});
     sendImage(image);
+    uploadFile(image);
   }
 
   @override
@@ -121,6 +118,7 @@ class _DetectMainState extends State<DetectMain> {
     });
   }
 
+  // To print the prediction value
   Widget printValue(rcg) {
     if (rcg == null) {
       return Text('',
@@ -131,12 +129,11 @@ class _DetectMainState extends State<DetectMain> {
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700)),
       );
     }
-
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
       child: Center(
         child: Text(
-          "Results: " + _recognitions[0]['label'].toString() + "\n\nDegree: ",
+          "Results: " + _recognitions[0]['label'].toString(),
           style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
         ),
       ),
@@ -170,6 +167,7 @@ class _DetectMainState extends State<DetectMain> {
       finalH = _imageHeight * ratioH * .50;
     }
 
+    // Function to print the greeting to the user
     String greeting() {
       var hour = DateTime.now().hour;
       if (hour < 12) {
@@ -182,17 +180,17 @@ class _DetectMainState extends State<DetectMain> {
     }
 
     return Scaffold(
+      // Appbar with heading and login button
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => DetectMain())),
+              context, MaterialPageRoute(builder: (context) => DetectMain())),
         ),
         title: Text(
           "Crop Medic Plus 2.0",
-          style: TextStyle(color: Colors.white), textAlign: TextAlign.left,
+          style: TextStyle(color: Colors.white),
+          textAlign: TextAlign.left,
         ),
         actions: <Widget>[
           IconButton(
@@ -210,6 +208,8 @@ class _DetectMainState extends State<DetectMain> {
         backgroundColor: Colors.teal,
         centerTitle: false,
       ),
+
+      // View of the main page
       body: ListView(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
@@ -218,6 +218,8 @@ class _DetectMainState extends State<DetectMain> {
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
             children: _image == null
+
+                // Disorder description view
                 ? <Widget>[
                     Padding(
                       padding: EdgeInsets.only(
@@ -250,26 +252,6 @@ class _DetectMainState extends State<DetectMain> {
                                   'Browse and Detect the disorder in one click.'),
                             ],
                           ),
-                          // CircleAvatar(
-                          //   backgroundColor: Colors.transparent,
-                          //   radius: 30,
-                          //   child: InkWell(
-                          //     onTap: () {
-                          //       Navigator.push(
-                          //           context,
-                          //           MaterialPageRoute(
-                          //               builder: (context) => Login()));
-                          //     },
-                          //     child: ClipOval(
-                          //         child: Image.asset(
-                          //       'assets/boy.jpeg',
-                          //       // Photo from https://unsplash.com/photos/QXevDflbl8A
-                          //       fit: BoxFit.cover,
-                          //       width: 55.0,
-                          //       height: 55.0,
-                          //     )),
-                          //   ),
-                          // ),
                         ],
                       ),
                     ),
@@ -289,6 +271,8 @@ class _DetectMainState extends State<DetectMain> {
                       ]),
                     )
                   ]
+
+                // View of prediction results with image
                 : <Widget>[
                     Padding(
                       padding: const EdgeInsets.all(4.0),
@@ -306,20 +290,25 @@ class _DetectMainState extends State<DetectMain> {
                             height: 10,
                           ),
                           Image.file(_image,
-                              fit: BoxFit.fill, width: finalW, height: finalH
-                          ),
-                          // _startUpload(),
+                              fit: BoxFit.fill, width: finalW, height: finalH),
                         ],
                       ),
                     ),
                   ],
           ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(0, 10, 0, 30),
-            child: printValue(_recognitions),
+
+          // To print the class of prediction
+          Column(
+            children: <Widget>[
+              Padding(
+                  padding: EdgeInsets.fromLTRB(0, 10, 0, 30),
+                  child: printValue(_recognitions)),
+            ],
           ),
         ],
       ),
+
+      // Floating button for camera and gallery
       floatingActionButton: SpeedDial(
         animatedIcon: AnimatedIcons.menu_close,
         animatedIconTheme: IconThemeData(color: Colors.white, size: 25),

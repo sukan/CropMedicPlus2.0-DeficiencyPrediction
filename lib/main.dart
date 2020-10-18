@@ -6,6 +6,7 @@ import 'Prediction.dart';
 void main(){
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
+    // Onboarding page
     home: AnimatedSplash(
       imagePath: 'assets/icon.PNG',
       home: DetectMain(),

@@ -5,6 +5,8 @@ import 'Disorder/GroundnutNitrogen.dart';
 import 'Disorder/GuavaPotassium.dart';
 
 class DisorderList extends StatelessWidget {
+
+  // Trending disorders
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,7 +23,8 @@ class DisorderList extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => GroundnutNitrogen()),
               );
             },
-            child: disorder('assets/10.JPG', 'Trending', 'Groundnut Nitrogen Deficiency'),
+            child: disorder(
+                'assets/10.JPG', 'Trending', 'Groundnut Nitrogen Deficiency'),
           ),
           GestureDetector(
             onTap: () {
@@ -30,7 +33,8 @@ class DisorderList extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => GuavaPotassium()),
               );
             },
-            child: disorder('assets/2.jpg', 'Trending', 'Guava Potassium Deficiency'),
+            child: disorder(
+                'assets/2.jpg', 'Trending', 'Guava Potassium Deficiency'),
           ),
           GestureDetector(
               onTap: () {
@@ -39,8 +43,8 @@ class DisorderList extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => CitrusNitrogen()),
                 );
               },
-              child: disorder('assets/18.jpg', 'Trending', 'Citrus Nitrogen Deficiency')
-          ),
+              child: disorder(
+                  'assets/18.jpg', 'Trending', 'Citrus Nitrogen Deficiency')),
           GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -48,19 +52,19 @@ class DisorderList extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => CornPhosphorus()),
                 );
               },
-              child: disorder('assets/9.jpg', 'Trending', 'Corn Phosphorus Deficiency')
-          )
-
+              child: disorder(
+                  'assets/9.jpg', 'Trending', 'Corn Phosphorus Deficiency'))
         ],
       ),
     );
   }
 
+  // disorder widget
   Widget disorder(
-      String imageurl,
-      String tag,
-      String name,
-      ) {
+    String imageurl,
+    String tag,
+    String name,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -111,11 +115,7 @@ class DisorderList extends StatelessWidget {
             style: TextStyle(fontFamily: 'ConcertOne-Regular'),
           ),
         ),
-
-
       ],
     );
   }
-
-
 }

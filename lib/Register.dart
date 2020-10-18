@@ -19,10 +19,8 @@ class _RegisterState extends State<Register> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () =>  Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => Login())),
+          onPressed: () => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Login())),
         ),
         title: Text(
           "Crop Medic Plus 2.0",
@@ -169,6 +167,7 @@ class _RegisterState extends State<Register> {
     );
   }
 
+  // Firebase Authentication
   Future<void> signUp() async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
@@ -185,6 +184,7 @@ class _RegisterState extends State<Register> {
     }
   }
 
+  // Email Validation
   String validateEmail(String value) {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -197,6 +197,7 @@ class _RegisterState extends State<Register> {
     return null;
   }
 
+  // Password Validation
   String validatePassword(String value) {
     if (value.isEmpty) {
       return ' Please enter the Password';
@@ -206,6 +207,7 @@ class _RegisterState extends State<Register> {
     return null;
   }
 
+  // Username Validation
   String validateUsername(String value) {
     if (value.isEmpty) {
       return 'Please enter Username';

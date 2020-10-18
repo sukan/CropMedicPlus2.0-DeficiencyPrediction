@@ -17,13 +17,12 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Appbar
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () =>  Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => DetectMain())),
+          onPressed: () => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => DetectMain())),
         ),
         title: Text(
           "Crop Medic Plus 2.0",
@@ -33,7 +32,6 @@ class _LoginState extends State<Login> {
         backgroundColor: Colors.teal,
         centerTitle: false,
       ),
-
       body: Form(
           key: _formKey,
           child: SingleChildScrollView(
@@ -63,9 +61,6 @@ class _LoginState extends State<Login> {
                 validator: validateEmail,
                 autovalidate: false,
                 onSaved: (input) => _email = input,
-//              decoration: InputDecoration(
-//                  labelText: "Email"
-//              ),
               ),
               SizedBox(height: 20),
 
@@ -85,12 +80,6 @@ class _LoginState extends State<Login> {
                 obscureText: true,
               ),
 
-//            RaisedButton(
-//              onPressed: signIn,
-//              color: Colors.indigo,
-//              height:,
-//              child: Text('Sign In'),
-//            ),
               SizedBox(
                 height: 30,
               ),
@@ -154,6 +143,7 @@ class _LoginState extends State<Login> {
     );
   }
 
+  // Firebase authentication
   Future<void> signIn() async {
     final formState = _formKey.currentState;
     if (formState.validate()) {
@@ -169,9 +159,11 @@ class _LoginState extends State<Login> {
     }
   }
 
+  // Email Validation
   String validateEmail(String value) {
     Pattern pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}'
+        r'\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);
     if (value.isEmpty) {
       return 'Please enter the email address';
@@ -180,6 +172,7 @@ class _LoginState extends State<Login> {
     }
   }
 
+  // Password length Validation
   String validatePassword(String value) {
     if (value.isEmpty) {
       return ' Please enter the Password';
